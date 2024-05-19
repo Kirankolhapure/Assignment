@@ -1,0 +1,175 @@
+//UserData.jsx
+
+const UserData = ({users}) => {
+    return (
+        <>
+            {
+                users.map((curUser) => {
+                    const {id, name, email} = curUser;
+                    const {street, city, zipcode} = curUser.address;
+
+                    return (
+                        <tr key={id}>
+                            <td>{id}</td>
+                            <td>{name}</td>
+                            <td>{email}</td>
+                            <td>{street}, {city}, {" "}, {zipcode}</td>
+                        </tr>
+                    )
+                })
+
+            }
+        </>
+    )
+}
+export default UserData;
+
+//App.css
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+//App.jsx
+import {useEffect, useState} from "react";
+import UserData from "./components/UserData.jsx";
+
+const API = "https://jsonplaceholder.typicode.com/users";
+
+const App = () => {
+    const [users, setUsers] = useState([]);
+
+    const fetchUsers = async (url) => {
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data.length > 0) {
+                setUsers(data);
+            }
+            console.log(data);
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+
+    useEffect(() => {
+        fetchUsers(API);
+    }, [])
+    return <>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Address</th>
+            </tr>
+            </thead>
+            <tbody>
+            <UserData users={users}/>
+            </tbody>
+        </table>
+    </>
+}
+
+export default App;
+
+//index.css
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&family=Lexend+Deca:wght@100;200;300;400;500;600;700&family=Poppins:wght@300;400;600&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+html{
+  font-size: 62.5%;
+}
+
+table {
+  margin: 5rem auto;
+  border-radius: 2rem;
+  border: 1rem hidden #443C68;
+  border-collapse: collapse;
+  box-shadow: 0 0 0 1px black;
+  overflow: hidden;
+  max-width: 80rem;
+}
+
+li, p, a, td{
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+
+thead {
+  font-size: 1.8rem;
+  background-color: #443C68;
+  color: #fff;
+}
+
+th,
+td {
+  border: 1px solid #443C68;
+  min-width: 30rem;
+  padding: 1.5rem;
+  line-height: 1.7;
+}
+
+td {
+  font-size: 1.4rem;
+}
+
+//main.jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
