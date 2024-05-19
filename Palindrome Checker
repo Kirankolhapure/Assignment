@@ -1,0 +1,12 @@
+import re
+
+def is_palindrome(s: str) -> bool:
+    normalized_str = re.sub(r'[^A-Za-z0-9]', '', s).lower()
+    return normalized_str == normalized_str[::-1]
+
+user_input = input("Enter a string to check if it is a palindrome: ")
+
+if is_palindrome(user_input):
+    print("The string is a palindrome.")
+else:
+    print("The string is not a palindrome.")
